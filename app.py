@@ -1,9 +1,10 @@
-from flask import Flask, render_template, request, jsonify, Response, send_file
+from flask import Flask, render_template, request, jsonify, Response
 import json
 import re
 import threading
 import os
 from datetime import datetime
+import pytz  # For Indian Standard Time (IST)
 
 app = Flask(__name__)
 
@@ -23,7 +24,7 @@ def extract_keywords(user_input):
     words = re.findall(r'\b\w+\b', user_input)
     return " ".join(words)
 
-# Function to store unknown queries with separate date and time
+# Function to store unknown queries in a single line with IST time
 def store_unknown_query(query):
     unknown_file = "data/unknown_queries.json"
 
@@ -39,9 +40,11 @@ def store_unknown_query(query):
             except json.JSONDecodeError:
                 data = []
             
-            # Add query with separate date and time
-            now = datetime.now()
-            entry = {"query": query, "date": now.strftime("%Y-%m-%d"), "time": now.strftime("%H:%M:%S")}
+            # Convert time to Indian Standard Time (IST)
+            ist = pytz.timezone("Asia/Kolkata")
+            now = datetime.now(ist)
+            
+            entry = f"{query} | {now.strftime('%Y-%m-%d %H:%M:%S')}"  # Single-line format
             
             if entry not in data:  # Avoid duplicate entries
                 data.append(entry)
