@@ -3,4 +3,5 @@ fuzzywuzzy
 python-Levenshtein
 nltk
 gunicorn
+pytz
 
