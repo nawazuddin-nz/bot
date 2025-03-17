@@ -1,0 +1,16 @@
+{
+    "lab_1?": ["lab 1"],
+    "lab_2?": ["lab 2"],
+    "general_lab?": ["lab", "computer lab", "labb"],
+
+    "admin_keywords": ["admin office", "administration", "admin block"],
+    "hod?": [ "head of department bca", "bca hod","hod of bca"],
+
+    "responses": {
+        "lab_1?": "Lab 1 is on the 1st floor.",
+        "lab_2?": "Lab 2 is on the 2nd floor.",
+        "general_lab?": "There are many labs, Could you specify which one..?",
+        "admin_keywords": "The Admin Office is on the ground floor.",
+        "hod?": "The HoD of BCA is Mr venkatesh."
+    }
+}

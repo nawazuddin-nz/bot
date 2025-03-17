@@ -1,0 +1,47 @@
+{
+    "lab 3": ["Lab 3 is in Block c, thirdfloor."],
+    "lab 4": ["Lab 4 is in Block B, second floor."],
+    "admin office": ["The Admin Office is near the entrance."],
+    "hod": ["The HoD of BCA is Dr. XYZ."],
+    "library": ["The college library is in Block C, ground floor."],
+    "canteen": ["The canteen is behind the main building."],
+    "principal": ["The Principal is Dr. ABC."]
+}
+
+
+
+
+
+def get_response(user_input):
+    user_keywords = user_input.lower()
+
+    # Ensure 'college_data' is loaded properly
+    if not college_data:
+        return "College data is not available."
+
+    # Tokenize user input to get more precise matching
+    tokens = word_tokenize(user_keywords)
+
+    # Extract top 3 matches instead of just one
+    best_matches = process.extract(user_keywords, list(college_data.keys()), limit=3)
+
+    if best_matches:
+        for match, score in best_matches:
+            # Check if at least one word from user input is in the matched question
+            for word in tokens:
+                if word in match.lower():
+                    if score > 60:  # Adjust this threshold if needed
+                        return college_data[match]
+
+        return "I'm not sure. Can you ask in a different way?"
+    
+    return "Sorry, I couldn't understand your question."
+
+
+
+multiple similar done
+
+
+import nltk
+nltk.download('punkt')
+run in py environment
