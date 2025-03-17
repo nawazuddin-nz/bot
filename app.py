@@ -3,6 +3,7 @@ import json
 import re
 import threading
 import os
+from datetime import datetime
 
 app = Flask(__name__)
 
@@ -22,7 +23,7 @@ def extract_keywords(user_input):
     words = re.findall(r'\b\w+\b', user_input)
     return " ".join(words)
 
-# Function to store unknown queries
+# Function to store unknown queries with separate date and time
 def store_unknown_query(query):
     unknown_file = "data/unknown_queries.json"
 
@@ -38,8 +39,12 @@ def store_unknown_query(query):
             except json.JSONDecodeError:
                 data = []
             
-            if query not in data:  # Avoid duplicate entries
-                data.append(query)
+            # Add query with separate date and time
+            now = datetime.now()
+            entry = {"query": query, "date": now.strftime("%Y-%m-%d"), "time": now.strftime("%H:%M:%S")}
+            
+            if entry not in data:  # Avoid duplicate entries
+                data.append(entry)
                 file.seek(0)
                 json.dump(data, file, indent=4)
 
