@@ -1,12 +1,8 @@
-from flask import Flask, render_template, request, jsonify
+from flask import Flask, render_template, request, jsonify, Response, send_file
 import json
 import re
 import threading
 import os
-# import nltk
-# from nltk.tokenize import word_tokenize
-
-# nltk.download('punkt')
 
 app = Flask(__name__)
 
@@ -75,6 +71,17 @@ def chatbot_response():
         response = get_response(user_input)
         return jsonify({"response": response})
     return jsonify({"response": "Please ask a question."})
+
+# Endpoint to view unknown queries
+@app.route("/view-file")
+def view_file():
+    unknown_file = "data/unknown_queries.json"
+    try:
+        with open(unknown_file, "r") as file:
+            content = file.read()
+        return Response(content, mimetype="application/json")
+    except Exception as e:
+        return f"Error: {e}"
 
 if __name__ == "__main__":
     app.run(debug=True)
