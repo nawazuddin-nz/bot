@@ -2,3 +2,5 @@ Flask
 fuzzywuzzy
 python-Levenshtein
 nltk
+gunicorn
+
