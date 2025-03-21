@@ -1,20 +1,21 @@
-body {
+/* body {
     font-family: "Comic Neue", serif;
     display: flex;
     justify-content: center;
     align-items: center;
     height: 100vh;
     background-color: #f4f4f4;
-}
+} */
 
-.chat-container {
+/* .chat-container {
     width: 350px;
     padding: 15px;
     border-radius: 8px;
     background: #a8d8ee;
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
     text-align: center;
-}
+    box-shadow: 0px 0.5px 0.5px #EFEFEF, 0px 1px 0.5px rgba(239, 239, 239, 0.5);
+} */
 
 #chat-box {
     height: 500px;
@@ -30,7 +31,7 @@ body {
 
 .user-message {
     align-self: flex-end;
-    background-color: #007bff;
+    background-color: #ae96d0;
     color: white;
     padding: 8px 12px;
     border-radius: 10px;
@@ -40,8 +41,8 @@ body {
 
 .bot-message {
     align-self: flex-start;
-    background-color: #bde8fbd9;
-    color: black;
+    background-color: #9fa1a1d9;
+    color: white;
     padding: 8px 12px;
     border-radius: 10px;
     max-width: 70%;
