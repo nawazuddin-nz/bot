@@ -1,24 +1,160 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>pcanzz3</title>
+    <title>College Chatbot</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
     <link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Comic+Neue:ital,wght@0,300;0,400;0,700;1,300;1,400;1,700&family=Open+Sans:ital,wght@0,300..800;1,300..800&display=swap" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Comic+Neue:ital,wght@0,300;0,400;0,700;1,300;1,400;1,700&family=Open+Sans:ital,wght@0,300..800;1,300..800&display=swap" rel="stylesheet">
+    <!-- Add Font Awesome for microphone icon -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+    <style>
+    body {
+    font-family: "Comic Neue", serif;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    background-color: #f4f4f4;
+}
+
+
+       .chat-container {
+    width: 450px;
+    padding: 15px;
+    border-radius: 8px;
+    background: #e04646;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    text-align: center;
+    box-shadow: 0px 0.5px 0.5px #595858, 0px 1px 0.5px rgba(239, 239, 239, 0.5);
+    stroke: black 25px;
+}
+#chat-box{
+    border-radius: 5px;
+}
+
+
+        #user-input {
+            width: 60%;
+            padding: 10px;
+            margin-right: 10px;
+        }
+
+        button, #mic-btn {
+            padding: 10px ;
+            cursor: pointer;
+        }
+
+        #mic-btn {
+            background-color: #ffeb3b;
+            border: none;
+            font-size: 1em;
+            color: #333;
+        }
+
+        #mic-btn:hover {
+            background-color: #fdd835;
+        }
+
+        .chat-container button {
+            background-color: #51dd51;
+            color: white;
+            border: none;
+        }
+
+        .chat-container button:hover {
+            background-color: #696b69;
+        }
+        .sendbtn{
+           height: 1%;
+           width: 20%;
+        }
+        
+    </style>
 </head>
 <body>
     <div class="chat-container">
         <h2>College Chatbot</h2>
         <div id="chat-box"></div>
         <input type="text" id="user-input" placeholder="Ask something...">
-        <button onclick="sendMessage()">Send</button>
+        <!-- Microphone icon button to trigger voice input -->
+        <button id="mic-btn" onclick="startVoiceInput()"><i class="fas fa-microphone"></i></button>
+        <button onclick="sendMessage()" class="sendbtn">Send</button>
+        <br>
     </div>
 
+    <script>
+        // For capturing voice input
+        const recognition = new (window.SpeechRecognition || window.webkitSpeechRecognition)();
+        recognition.lang = "en-US";  // Set the language to English (US)
 
-    <script src="{{ url_for('static', filename='script.js') }}"></script>
+        recognition.onstart = () => {
+            console.log("Voice recognition started. Speak now.");
+        };
+
+        recognition.onresult = (event) => {
+            let userInput = event.results[0][0].transcript;  // Captures the spoken text
+            document.getElementById("user-input").value = userInput;  // Display in the text box
+            sendMessage();  // Call the sendMessage function with the captured voice input
+        };
+
+        function startVoiceInput() 
+        {
+            console.log("Waiting for 5 seconds before listening...");
+    
+            setTimeout(() => 
+            {
+                console.log("Listening now...");
+                recognition.start();  // Start listening after 5 seconds
+            }, 6000);  // 5000ms = 5 seconds
+        }
+
+
+        // function startVoiceInput() {
+        //     recognition.start();  // Start listening for voice input no time 
+        // }
+
+        // For sending the message and getting the bot response
+        function sendMessage() {
+            let userInput = document.getElementById("user-input").value;
+            if (userInput.trim() === "") return;
+
+            let chatBox = document.getElementById("chat-box");
+
+            // Append user message
+            let userMessage = document.createElement("div");
+            userMessage.classList.add("user-message");
+            userMessage.textContent = userInput;
+            chatBox.appendChild(userMessage);
+
+            fetch(`/get_response?query=${encodeURIComponent(userInput)}`)
+                .then(response => response.json())
+                .then(data => {
+                    // Append bot response (Text)
+                    let botMessage = document.createElement("div");
+                    botMessage.classList.add("bot-message");
+                    botMessage.textContent = data.response;
+                    chatBox.appendChild(botMessage);
+
+                    // Convert the bot's response to voice
+                    let speech = new SpeechSynthesisUtterance(data.response);
+                    speech.lang = "en-US";  // Set language to English (US)
+                    window.speechSynthesis.speak(speech);  // Speak the message
+
+                    chatBox.scrollTop = chatBox.scrollHeight; // Auto-scroll to bottom
+                });
+
+            document.getElementById("user-input").value = "";
+        }
+
+        // Event listener for Enter key to send text input
+        document.getElementById("user-input").addEventListener("keypress", function (event) {
+            if (event.key === "Enter") {
+                sendMessage();
+            }
+        });
+    </script>
 </body>
 </html>
