@@ -132,73 +132,81 @@ button, #mic-btn {
     </div>
 
     <script>
-        // For capturing voice input
+        let isVoiceInput = false; // Tracks if voice input is active
+
+        // Initialize speech recognition API
         const recognition = new (window.SpeechRecognition || window.webkitSpeechRecognition)();
-        recognition.lang = "en-US";  // Set the language to English (US)
+        recognition.lang = "en-US"; // Set language to English (US)
 
+        // Event triggered when voice recognition starts
         recognition.onstart = () => {
-            console.log("Voice recognition started. Speak now.");
+            console.log("Voice recognition started...");
+            document.getElementById("mic-icon").classList.replace("fa-microphone-slash", "fa-microphone"); 
         };
 
+        // Event triggered when voice recognition stops
+        recognition.onend = () => {
+            document.getElementById("mic-icon").classList.replace("fa-microphone", "fa-microphone-slash");
+        };
+
+        // Event triggered when voice input is recognized
         recognition.onresult = (event) => {
-            let userInput = event.results[0][0].transcript;  // Captures the spoken text
-            document.getElementById("user-input").value = userInput;  // Display in the text box
-            sendMessage();  // Call the sendMessage function with the captured voice input
+            let userInput = event.results[0][0].transcript; // Capture spoken text
+            document.getElementById("user-input").value = userInput;  // Display in input field
+            sendMessage(true); // Send message with voice flag set to true
         };
 
-        function startVoiceInput() 
-        {
-            console.log("Waiting for 5 seconds before listening...");
-    
-            setTimeout(() => 
-            {
-                console.log("Listening now...");
-                recognition.start();  // Start listening after 5 seconds
-            }, 6000);  // 5000ms = 5 seconds
+        // Function to start/stop voice recognition
+        function toggleVoiceInput() {
+            if (isVoiceInput) {
+                recognition.stop(); // Stop voice recognition
+                isVoiceInput = false;
+            } else {
+                recognition.start(); // Start voice recognition
+                isVoiceInput = true;
+            }
         }
 
-
-        // function startVoiceInput() {
-        //     recognition.start();  // Start listening for voice input no time 
-        // }
-
-        // For sending the message and getting the bot response
-        function sendMessage() {
+        // Function to send the message and display bot response
+        function sendMessage(fromVoice) {
             let userInput = document.getElementById("user-input").value;
-            if (userInput.trim() === "") return;
+            if (userInput.trim() === "") return; // Prevent empty messages
 
             let chatBox = document.getElementById("chat-box");
 
-            // Append user message
+            // Append user message to chatbox
             let userMessage = document.createElement("div");
             userMessage.classList.add("user-message");
             userMessage.textContent = userInput;
             chatBox.appendChild(userMessage);
 
+            // Fetch bot response from the Flask backend
             fetch(`/get_response?query=${encodeURIComponent(userInput)}`)
                 .then(response => response.json())
                 .then(data => {
-                    // Append bot response (Text)
+                    // Append bot response to chatbox
                     let botMessage = document.createElement("div");
                     botMessage.classList.add("bot-message");
                     botMessage.textContent = data.response;
                     chatBox.appendChild(botMessage);
 
-                    // Convert the bot's response to voice
-                    let speech = new SpeechSynthesisUtterance(data.response);
-                    speech.lang = "en-US";  // Set language to English (US)
-                    window.speechSynthesis.speak(speech);  // Speak the message
+                    // Speak bot response if the user used voice input
+                    if (fromVoice) {
+                        let speech = new SpeechSynthesisUtterance(data.response);
+                        speech.lang = "en-US"; 
+                        window.speechSynthesis.speak(speech); 
+                    }
 
                     chatBox.scrollTop = chatBox.scrollHeight; // Auto-scroll to bottom
                 });
 
-            document.getElementById("user-input").value = "";
+            document.getElementById("user-input").value = ""; // Clear input field after sending
         }
 
-        // Event listener for Enter key to send text input
+        // Event listener to send message when Enter key is pressed
         document.getElementById("user-input").addEventListener("keypress", function (event) {
             if (event.key === "Enter") {
-                sendMessage();
+                sendMessage(false);
             }
         });
     </script>
