@@ -11,7 +11,7 @@
     <!-- Add Font Awesome for microphone icon -->
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
     <style>
-    body {
+   body {
     font-family: "Comic Neue", serif;
     display: flex;
     justify-content: center;
@@ -20,57 +20,103 @@
     background-color: #f4f4f4;
 }
 
-
-       .chat-container {
+.chat-container {
     width: 450px;
     padding: 15px;
     border-radius: 8px;
-    background: #e04646;
+    background: #d9e3ee;
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
     text-align: center;
     box-shadow: 0px 0.5px 0.5px #595858, 0px 1px 0.5px rgba(239, 239, 239, 0.5);
-    stroke: black 25px;
 }
-#chat-box{
+
+#chat-box {
+    height: 500px;
+    overflow-y: auto;
+    border: 1px solid #ddd;
+    padding: 10px;
+    background: #fafafa;
+    margin-bottom: 10px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
     border-radius: 5px;
 }
 
+.user-message {
+    align-self: flex-end;
+    background-color: #d0e3ff;
+    color: rgb(0, 0, 0);
+    padding: 8px 12px;
+    font-weight: 600;
+    border-radius: 10px;
+    max-width: 70%;
+    text-align: left;
+}
 
-        #user-input {
-            width: 60%;
-            padding: 10px;
-            margin-right: 10px;
-        }
+.bot-message {
+    align-self: flex-start;
+    background-color: #f0f0f0;
+    color: rgb(0, 0, 0);
+    padding: 8px 12px;
+    font-weight: 600;
+    border-radius: 10px;
+    max-width: 70%;
+    text-align: left;
+}
 
-        button, #mic-btn {
-            padding: 10px ;
-            cursor: pointer;
-        }
+#user-input {
+    width: 60%;
+    padding: 10px;
+    margin-right: 10px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+}
 
-        #mic-btn {
-            background-color: #ffeb3b;
-            border: none;
-            font-size: 1em;
-            color: #333;
-        }
+button, #mic-btn {
+    padding: 10px;
+    cursor: pointer;
+    border: none;
+}
 
-        #mic-btn:hover {
-            background-color: #fdd835;
-        }
+#mic-btn {
+    background-color: #c2d1e0;
+    font-size: 1em;
+    color: #333;
+    border-radius: 3px;
+    transition: background-color 0.3s, box-shadow 0.3s;
+}
 
-        .chat-container button {
-            background-color: #51dd51;
-            color: white;
-            border: none;
-        }
+#mic-btn:hover {
+    background-color: #095369;
+    color: #d9e3ee;
+    transition: all 0.2s ease-in-out;
+}
 
-        .chat-container button:hover {
-            background-color: #696b69;
-        }
-        .sendbtn{
-           height: 1%;
-           width: 20%;
-        }
+#mic-btn.active {
+    background-color: #a7ffda;
+    box-shadow: 0 0 10px #348ef5;
+}
+
+.chat-container button {
+    background-color: #4078c0;
+    border-radius: 3px;
+    color: white;
+}
+
+.chat-container button:hover {
+    background-color: #095369;
+    transition: all 0.2s ease-in-out;
+}
+
+.sendbtn {
+    width: 20%;
+}
+#mic-btn.active {
+    background-color: #ff7950;
+    box-shadow: 0 0 10px #e53935;  /* Glowing effect when active */
+}
+
         
     </style>
 </head>
