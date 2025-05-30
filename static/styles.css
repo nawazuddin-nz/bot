@@ -1,21 +1,21 @@
-/* body {
+body {
     font-family: "Comic Neue", serif;
     display: flex;
     justify-content: center;
     align-items: center;
     height: 100vh;
     background-color: #f4f4f4;
-} */
+}
 
-/* .chat-container {
-    width: 350px;
+.chat-container {
+    width: 450px;
     padding: 15px;
     border-radius: 8px;
-    background: #a8d8ee;
+    background: #d9e3ee;
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
     text-align: center;
-    box-shadow: 0px 0.5px 0.5px #EFEFEF, 0px 1px 0.5px rgba(239, 239, 239, 0.5);
-} */
+    box-shadow: 0px 0.5px 0.5px #595858, 0px 1px 0.5px rgba(239, 239, 239, 0.5);
+}
 
 #chat-box {
     height: 500px;
@@ -27,13 +27,15 @@
     display: flex;
     flex-direction: column;
     gap: 8px;
+    border-radius: 5px;
 }
 
 .user-message {
     align-self: flex-end;
-    background-color: #ae96d0;
-    color: white;
+    background-color: #d0e3ff;
+    color: rgb(0, 0, 0);
     padding: 8px 12px;
+    font-weight: 600;
     border-radius: 10px;
     max-width: 70%;
     text-align: left;
@@ -41,27 +43,63 @@
 
 .bot-message {
     align-self: flex-start;
-    background-color: #9fa1a1d9;
-    color: white;
+    background-color: #f0f0f0;
+    color: rgb(0, 0, 0);
     padding: 8px 12px;
+    font-weight: 600;
     border-radius: 10px;
     max-width: 70%;
     text-align: left;
 }
 
-input {
-    width: 75%;
-    padding: 8px;
-    margin-right: 5px;
+#user-input {
+    width: 60%;
+    padding: 10px;
+    margin-right: 10px;
     border-radius: 5px;
     border: 1px solid #ccc;
 }
 
-button {
-    padding: 8px 10px;
-    border-radius: 5px;
-    border: none;
-    background: #007bff;
-    color: white;
+button, #mic-btn {
+    padding: 10px;
     cursor: pointer;
+    border: none;
+}
+
+#mic-btn {
+    background-color: #c2d1e0;
+    font-size: 1em;
+    color: #333;
+    border-radius: 3px;
+    transition: background-color 0.3s, box-shadow 0.3s;
+}
+
+#mic-btn:hover {
+    background-color: #095369;
+    color: #d9e3ee;
+    transition: all 0.2s ease-in-out;
+}
+
+#mic-btn.active {
+    background-color: #a7ffda;
+    box-shadow: 0 0 10px #348ef5;
+}
+
+.chat-container button {
+    background-color: #4078c0;
+    border-radius: 3px;
+    color: white;
+}
+
+.chat-container button:hover {
+    background-color: #095369;
+    transition: all 0.2s ease-in-out;
+}
+
+.sendbtn {
+    width: 20%;
+}
+#mic-btn.active {
+    background-color: #ff7950;
+    box-shadow: 0 0 10px #e53935;  /* Glowing effect when active */
 }
